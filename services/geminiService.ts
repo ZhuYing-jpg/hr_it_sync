@@ -1,7 +1,16 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { ProcessType, UserRole } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+//const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+// ✅ 安全：从环境变量读取
+const ai = new GoogleGenAI({ 
+  apiKey: import.meta.env.VITE_GEMINI_API_KEY || ""
+});
+
+if (!import.meta.env.VITE_GEMINI_API_KEY) {
+  console.warn("⚠️ Gemini API 密钥未配置，将使用后备数据或请求会失败");
+}
 
 // Define the response schema for the checklist
 const checklistSchema: Schema = {
